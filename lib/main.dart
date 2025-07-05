@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'Presentation/HomePage/home_page.dart';
+import 'package:register/Presentation/HomePage/home_page.dart';
 
 void main(List<String> args) {
   runApp(App());
@@ -14,7 +13,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         textTheme: TextTheme(
           displayLarge: const TextStyle(
             fontSize: 72,
@@ -26,7 +25,9 @@ class App extends StatelessWidget {
             // fontStyle: FontStyle.italic,
           ),
           bodyMedium: GoogleFonts.merriweather(),
-          displaySmall: GoogleFonts.pacifico(),
+          displaySmall: GoogleFonts.pacifico(
+            fontSize: 20
+          ),
         ),
       ),
       home: HomePage(),

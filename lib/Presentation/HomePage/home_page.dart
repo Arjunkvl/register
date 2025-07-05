@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:register/Presentation/HomePage/widgets/bottom_sheet.dart';
+import 'package:register/Presentation/HomePage/widgets/list_tile.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -6,6 +8,17 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            // isScrollControlled: true,
+            context: context,
+            builder: (context) => CstmBottomSheet(),
+          );
+        },
+        child: Icon(Icons.add),
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -13,17 +26,22 @@ class HomePage extends StatelessWidget {
             Expanded(
               flex: 1,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 20),
                 child: Container(
-                  color: Theme.of(context).colorScheme.primary,
-                  //decoration: BoxDecoration(color: Colors.black),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(20)
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Total",style: Theme.of(context).textTheme.titleLarge,),
+                        Text(
+                          "Total",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
                         Text(
                           "80rs",
                           style: Theme.of(context).textTheme.displayLarge,
@@ -39,10 +57,9 @@ class HomePage extends StatelessWidget {
               flex: 2,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Container(
-                  color: Theme.of(context).colorScheme.primary,
-                  //decoration: BoxDecoration(color: Colors.black),
-                  child: Text("data"),
+                child: ListView.builder(
+                  itemCount: 50,
+                  itemBuilder: (context, index) => CstListTile(),
                 ),
               ),
             ),
