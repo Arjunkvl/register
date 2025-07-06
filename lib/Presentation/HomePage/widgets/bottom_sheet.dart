@@ -1,8 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:register/Presentation/HomePage/bloc/home_page_bloc.dart';
 
-class CstmBottomSheet extends StatelessWidget {
+class CstmBottomSheet extends StatefulWidget {
   const CstmBottomSheet({super.key});
 
+  @override
+  State<CstmBottomSheet> createState() => _CstmBottomSheetState();
+}
+
+class _CstmBottomSheetState extends State<CstmBottomSheet> {
+  late TextEditingController _controller;
+  @override
+  void initState() {
+    _controller = TextEditingController();
+    super.initState();
+  }
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,6 +34,7 @@ class CstmBottomSheet extends StatelessWidget {
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
             child: TextField(
+              controller: _controller,
               keyboardType: TextInputType.number,
               onTapOutside: (event) => FocusScope.of(context).unfocus(),
               textAlign: TextAlign.center,
@@ -34,15 +53,21 @@ class CstmBottomSheet extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadiusGeometry.circular(15),
             ),
-            onPressed: () async {
+            onPressed: () {
               // await showDatePicker(
               //       context: context,
               //       firstDate: DateTime(2025, 1, 1),
               //       lastDate: DateTime(2026, 1, 1),
               //     ) ??
               //     DateTime.now();
-                Navigator.of(context).pop();
-            
+              context.read<HomePageBloc>().add(
+                AddPriceDataEvent(
+                  id: 0,
+                  price: int.parse(_controller.text),
+                  date: DateTime.now(),
+                ),
+              );
+              Navigator.of(context).pop();
             },
             child: Text(
               "Conform",

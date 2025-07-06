@@ -1,4 +1,10 @@
+
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:register/Presentation/HomePage/bloc/home_page_bloc.dart';
+import 'package:register/Presentation/HomePage/cubit/total_cubit.dart';
 import 'package:register/Presentation/HomePage/widgets/bottom_sheet.dart';
 import 'package:register/Presentation/HomePage/widgets/list_tile.dart';
 
@@ -7,6 +13,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<TotalCubit>().updateTotal();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
@@ -26,11 +33,14 @@ class HomePage extends StatelessWidget {
             Expanded(
               flex: 1,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 20),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 20,
+                ),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.circular(20)
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -42,9 +52,13 @@ class HomePage extends StatelessWidget {
                           "Total",
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
-                        Text(
-                          "80rs",
-                          style: Theme.of(context).textTheme.displayLarge,
+                        BlocBuilder<TotalCubit, TotalState>(
+                          builder: (context, state) {
+                            return Text(
+                              state.total.toString(),
+                              style: Theme.of(context).textTheme.displayLarge,
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -56,10 +70,20 @@ class HomePage extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: ListView.builder(
-                  itemCount: 50,
-                  itemBuilder: (context, index) => CstListTile(),
+                padding: const EdgeInsets.only(left: 10, right: 10, bottom: 55),
+                child: BlocBuilder<HomePageBloc, HomePageState>(
+                  builder: (context, state) {
+                    if (state is HomePageLoaded) {
+                      context.read<TotalCubit>().updateTotal();
+                      return ListView.builder(
+                        itemCount: state.data.length,
+                        itemBuilder: (context, index) =>
+                            CstListTile(data: state.data[index]),
+                      );
+                    } else {
+                      return SizedBox.shrink();
+                    }
+                  },
                 ),
               ),
             ),
