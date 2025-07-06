@@ -1,4 +1,5 @@
 
+
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<TotalCubit>().updateTotal();
+    context.read<HomePageBloc>().add(HomePageInitEvent());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
@@ -54,6 +55,7 @@ class HomePage extends StatelessWidget {
                         ),
                         BlocBuilder<TotalCubit, TotalState>(
                           builder: (context, state) {
+                            log("total called");
                             return Text(
                               state.total.toString(),
                               style: Theme.of(context).textTheme.displayLarge,
